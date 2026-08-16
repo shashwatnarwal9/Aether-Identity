@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Replay Verification - Aether Identity</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/static/theme.js"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<style>
+    .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal;
+      font-size: 24px; line-height: 1; display: inline-block; white-space: nowrap; direction: ltr;
+      -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; }
+    .glass-panel { background-color: rgba(247, 249, 251, 0.7); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
+    .glow-active { box-shadow: 0 0 20px rgba(70, 72, 212, 0.15); }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d8dadc; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #c7c4d7; }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 backdrop-blur-xl fixed top-0 w-full z-50 border-b border-glass-stroke shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<a class="flex items-center gap-2" href="/">
+<span class="material-symbols-outlined text-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">Aether Identity</span>
+</a>
+<ul class="hidden md:flex items-center gap-8">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors pb-1" href="/">Features</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors pb-1" href="/dashboard">Technology</a></li>
+<li><a class="font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1" href="/audit">Audit</a></li>
+</ul>
+<div class="hidden md:block">
+<a class="bg-primary hover:bg-primary/90 text-on-primary px-6 py-2 rounded-full font-body-md font-medium transition-colors active:scale-95 duration-150" href="/dashboard">Open Dashboard</a>
+</div>
+</div>
+</nav>
+<main class="flex-grow pt-[100px] pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full flex flex-col gap-8">
+<div id="root"><div class="glass-panel rounded-xl p-6 animate-pulse text-on-surface-variant">Loading event log…</div></div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest w-full py-12 border-t border-glass-stroke">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto gap-6">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">Aether Identity</span>
+<p class="font-body-md text-body-md text-primary text-center md:text-left">© 2026 Aether Identity. All rights reserved. Precision in Identity Resolution.</p>
+</div>
+<ul class="flex flex-wrap justify-center gap-6">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-colors" href="/audit">Auditability</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-colors" href="/dashboard">Technology</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-colors" href="/api/audit/export">Audit Export</a></li>
+</ul>
+</div>
+</footer>
+<script src="/static/app.js"></script>
+<script>
+const tOffset = (ts, lastTs) => {
+  const d = Math.max(0, (new Date(lastTs) - new Date(ts)) / 1000);
+  const hh = String(Math.floor(d / 3600)).padStart(2, "0");
+  const mm = String(Math.floor((d % 3600) / 60)).padStart(2, "0");
+  const ss = String(Math.floor(d % 60)).padStart(2, "0");
+  return `T-${hh}:${mm}:${ss}`;
+};
+
+function EventItem({ ev, lastTs, current }) {
+  const tag = `${ev.platform} ${ev.event_type.replace("_", " ")}`.toUpperCase();
+  return h("div", { className: `relative pl-6 border-l-2 ${current ? "border-transparent" : "border-surface-dim"} pb-4` },
+    h("div", { className: `absolute -left-[9px] top-0 w-4 h-4 rounded-full ${current
+      ? "bg-primary border-2 border-primary-container shadow-[0_0_10px_rgba(70,72,212,0.5)]"
+      : "bg-surface-container border-2 border-outline-variant"}` }),
+    h("div", { className: "flex justify-between items-start mb-2" },
+      h("span", { className: `font-label-mono text-label-mono ${current ? "text-primary" : "text-outline"}` }, tOffset(ev.timestamp, lastTs)),
+      h("span", { className: `px-2 py-0.5 rounded text-[10px] font-label-mono uppercase ${current ? "bg-primary/10 text-primary" : "bg-surface-container-high text-on-surface-variant"}` }, tag)),
+    h("div", { className: `bg-surface-container-lowest border rounded-lg p-3 overflow-x-auto ${current ? "border-primary/30 glow-active" : "border-surface-dim"}` },
+      h("pre", { className: "font-label-mono text-[11px] leading-relaxed text-on-surface" }, eventJson(ev))));
+}
+
+const compareRow = (label, a, b) => ({ label, a, b, ok: JSON.stringify(a) === JSON.stringify(b) });
+
+function App() {
+  const [events, setEvents] = React.useState(null);
+  const [audit, setAudit] = React.useState(null);
+  const [ids, setIds] = React.useState([]);
+  const [sim, setSim] = React.useState(null);
+  const [busy, setBusy] = React.useState(false);
+  const [showDiff, setShowDiff] = React.useState(false);
+  const [err, setErr] = React.useState(null);
+
+  React.useEffect(() => {
+    Promise.all([api("/api/events"), api("/api/audit"), api("/api/identities")])
+      .then(([e, a, i]) => { setEvents(e); setAudit(a); setIds(i); })
+      .catch(e => setErr(String(e)));
+  }, []);
+
+  const run = () => { setBusy(true);
+    api("/api/replay", { method: "POST" }).then(setSim).catch(e => setErr(String(e))).finally(() => setBusy(false)); };
+
+  if (err) return h("div", { className: "glass-panel rounded-xl p-6 text-error" }, "API error: " + err);
+  if (!events) return h("div", { className: "glass-panel rounded-xl p-6 animate-pulse text-on-surface-variant" }, "Loading event log…");
+
+  const lastTs = events.length ? events.reduce((m, e) => e.timestamp > m ? e.timestamp : m, events[0].timestamp) : null;
+  const primary = ids.slice().sort((a, b) => b.event_count - a.event_count || a.identity_id.localeCompare(b.identity_id))[0];
+  const histDecisions = audit ? audit.decisions : [];
+  const histLast = histDecisions[histDecisions.length - 1];
+  const simTrail = sim ? sim.trail : null;
+  const simLast = simTrail && simTrail[simTrail.length - 1];
+  const simPrimary = sim && sim.identities.slice().sort((a, b) => b.event_count - a.event_count || a.identity_id.localeCompare(b.identity_id))[0];
+
+  const rows = sim && histLast && simLast ? [
+    compareRow("Strategy", histLast.strategy, simLast.strategy),
+    compareRow("Linked Nodes", `${primary ? primary.user_ids.length : 0} active`,
+               `${simPrimary ? simPrimary.user_ids.length : 0} active`),
+    compareRow("Decisions Recorded", histDecisions.length, simTrail.length),
+  ] : [];
+
+  return h(React.Fragment, null,
+    /* Header */
+    h("header", { className: "flex flex-col md:flex-row md:items-end justify-between gap-6" },
+      h("div", { className: "max-w-2xl" },
+        h("div", { className: "flex items-center gap-2 text-primary mb-2" },
+          icon("history", "text-[20px]"),
+          h("span", { className: "font-label-mono text-label-mono uppercase tracking-wider" }, "Diagnostic Tool")),
+        h("h1", { className: "font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2" }, "Replay Verification"),
+        h("p", { className: "font-body-md text-body-md text-on-surface-variant" },
+          "Simulate deterministic resolution logic against historical event sequences to verify graph integrity.")),
+      h("div", { className: "flex flex-wrap items-center gap-4" },
+        h("a", { href: "/api/audit/export",
+          className: "glass-panel text-primary px-4 py-2 rounded-full font-body-md font-medium hover:bg-primary/5 transition-colors flex items-center gap-2" },
+          icon("download", "text-[18px]"), "Download Audit Report"),
+        h("button", { onClick: run, disabled: busy || !events.length,
+          className: "bg-primary text-on-primary px-6 py-2 rounded-full font-body-md font-medium hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2 disabled:opacity-60" },
+          icon(busy ? "hourglass_top" : "play_arrow", "text-[18px]"), busy ? "Simulating…" : "Run Simulation"))),
+    /* Split Screen */
+    h("div", { className: "grid grid-cols-1 lg:grid-cols-12 gap-gutter flex-grow" },
+      /* Left: Event Sequence */
+      h("section", { className: "lg:col-span-5 flex flex-col gap-4" },
+        h("h2", { className: "font-headline-md text-[18px] text-on-surface flex items-center gap-2" },
+          icon("list_alt", "text-outline"), `Event Sequence (${events.length})`),
+        h("div", { className: "glass-panel rounded-xl p-4 flex-grow flex flex-col gap-4 overflow-y-auto max-h-[900px]" },
+          events.length === 0
+            ? h("p", { className: "text-on-surface-variant p-4" }, "No events ingested yet — POST events to /events.")
+            : events.map((ev, i) => h(EventItem, { key: i, ev, lastTs, current: i === events.length - 1 })))),
+      /* Right: Resolved State */
+      h("section", { className: "lg:col-span-7 flex flex-col gap-4" },
+        h("div", { className: "flex items-center justify-between flex-wrap gap-3" },
+          h("h2", { className: "font-headline-md text-[18px] text-on-surface flex items-center gap-2" },
+            icon("account_tree", "text-outline"), "Resolved Identity State"),
+          sim && h("div", { className: `flex items-center gap-2 px-3 py-1 rounded-full ${sim.reproduced ? "text-signal-teal bg-signal-teal/10" : "text-error bg-error/10"}` },
+            icon(sim.reproduced ? "verified" : "error", "text-[16px]"),
+            h("span", { className: "font-label-mono text-[11px] font-bold uppercase tracking-wide" },
+              sim.reproduced ? "Simulation Match" : "Simulation Mismatch"))),
+        h("div", { className: "glass-panel rounded-xl p-6 flex-grow flex flex-col gap-6" },
+          /* Identity header */
+          h("div", { className: "flex items-start justify-between border-b border-surface-dim pb-4" },
+            h("div", null,
+              h("div", { className: "font-label-mono text-label-mono text-outline uppercase tracking-wider mb-1" }, "Primary Node"),
+              h("div", { className: "font-headline-md text-[24px] text-on-surface font-bold font-mono" },
+                primary ? primary.identity_id : "—")),
+            h("div", { className: "text-right" },
+              h("div", { className: "font-label-mono text-label-mono text-outline uppercase tracking-wider mb-1" }, "Confidence"),
+              h("div", { className: "font-headline-md text-[24px] text-primary font-bold" },
+                primary && primary.max_confidence != null ? (primary.max_confidence * 100).toFixed(1) + "%" : "—"))),
+          /* Resolution path */
+          h("div", null,
+            h("div", { className: "font-label-mono text-label-mono text-outline uppercase tracking-wider mb-2" }, "Resolution Path"),
+            h("div", { className: "bg-surface-container rounded-lg p-3 flex items-center justify-between border border-surface-dim gap-3" },
+              h("span", { className: "font-body-md text-[14px] text-on-surface" },
+                histLast ? h(React.Fragment, null, strategyMeta(histLast.strategy).label, " applied via ",
+                  h("strong", { className: "break-all" }, histLast.event_key)) : "No decisions recorded yet."),
+              histLast && icon("check_circle", "text-signal-teal shrink-0"))),
+          /* Comparison */
+          sim
+            ? h("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6" },
+                h("div", { className: "flex flex-col gap-2" },
+                  h("div", { className: "font-label-mono text-label-mono text-outline uppercase tracking-wider border-b border-surface-dim pb-1" },
+                    `Historical Record${histLast ? ` (${(histLast.decision_ts || "").slice(0, 10)})` : ""}`),
+                  h("ul", { className: "font-data-value text-data-value text-on-surface flex flex-col gap-2 mt-2" },
+                    rows.map((r, i) => h("li", { key: i, className: "flex justify-between border-b border-surface-dim/50 pb-1" },
+                      h("span", { className: "text-on-surface-variant" }, r.label + ":"),
+                      h("span", { className: "text-right break-all" }, String(r.a)))))),
+                h("div", { className: "flex flex-col gap-2 relative" },
+                  h("div", { className: "absolute -left-6 top-8 bottom-0 w-px bg-surface-dim hidden md:block" }),
+                  h("div", { className: "font-label-mono text-label-mono text-outline uppercase tracking-wider border-b border-surface-dim pb-1" },
+                    "Simulated State (Current Logic)"),
+                  h("ul", { className: "font-data-value text-data-value text-on-surface flex flex-col gap-2 mt-2" },
+                    rows.map((r, i) => h("li", { key: i, className: "flex justify-between items-center border-b border-surface-dim/50 pb-1" },
+                      h("div", { className: "flex flex-col" },
+                        h("span", { className: "text-on-surface-variant text-[12px]" }, r.label + ":"),
+                        h("span", { className: "break-all" }, String(r.b))),
+                      icon(r.ok ? "check" : "close", `${r.ok ? "text-signal-teal" : "text-error"} text-[16px] shrink-0`))))))
+            : h("div", { className: "text-on-surface-variant font-body-md bg-surface-container/60 border border-surface-dim rounded-lg p-6 text-center" },
+                events.length
+                  ? "Press Run Simulation to replay the full event log through a fresh engine and compare against the historical record."
+                  : "Ingest events first, then run the simulation."),
+          /* Action bar */
+          sim && h("div", { className: "mt-auto pt-4 border-t border-surface-dim flex flex-col gap-4" },
+            h("div", { className: "flex justify-end" },
+              h("button", { onClick: () => setShowDiff(!showDiff),
+                className: "text-primary font-body-md font-medium text-[14px] hover:underline flex items-center gap-1" },
+                showDiff ? "Hide Full JSON Diff" : "View Full JSON Diff",
+                icon(showDiff ? "expand_less" : "arrow_forward", "text-[16px]"))),
+            showDiff && h("div", { className: "bg-data-node-bg rounded-lg p-4 overflow-auto max-h-96" },
+              h("pre", { className: "font-label-mono text-[11px] leading-relaxed text-outline-variant" },
+                JSON.stringify({
+                  historical_last_decision: histLast || null,
+                  simulated_last_decision: simLast || null,
+                  reproduced: sim.reproduced,
+                  events_replayed: sim.events_replayed,
+                }, null, 2))))))));
+}
+ReactDOM.createRoot(document.getElementById("root")).render(h(App));
+</script>
+</body></html>

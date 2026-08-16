@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether Identity - Identity Resolution Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/static/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<style>
+    .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal;
+      font-size: 24px; line-height: 1; display: inline-block; white-space: nowrap; direction: ltr;
+      -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; }
+    .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.4); }
+    .bg-mesh { background-color: #f7f9fb;
+      background-image: radial-gradient(at 40% 20%, hsla(28,100%,74%,0.15) 0px, transparent 50%),
+                        radial-gradient(at 80% 0%, hsla(189,100%,56%,0.15) 0px, transparent 50%),
+                        radial-gradient(at 0% 50%, hsla(355,100%,93%,0.15) 0px, transparent 50%); }
+    /* Timeline scrubber, styled to the design: slate track, cyber-purple fill, white thumb */
+    input[type=range].scrubber { -webkit-appearance: none; appearance: none; width: 100%; height: 8px;
+      border-radius: 9999px; background: linear-gradient(to right, #7C3AED 0%, #7C3AED var(--fill, 100%), #e6e8ea var(--fill, 100%), #e6e8ea 100%); cursor: pointer; }
+    input[type=range].scrubber::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px;
+      border-radius: 9999px; background: #fff; border: 2px solid #7C3AED; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform .15s; }
+    input[type=range].scrubber::-webkit-slider-thumb:hover { transform: scale(1.25); }
+    input[type=range].scrubber::-moz-range-thumb { width: 16px; height: 16px; border-radius: 9999px;
+      background: #fff; border: 2px solid #7C3AED; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+</style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen bg-mesh">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-glass-stroke shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md font-bold text-primary" href="/">Aether Identity</a>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="/">Features</a>
+<a class="text-primary font-bold border-b-2 border-primary font-body-md pb-1" href="/dashboard">Technology</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="/audit">Audit</a>
+</div>
+<a class="bg-gradient-to-r from-primary to-tertiary text-on-primary px-6 py-2 rounded-full font-label-mono hover:shadow-[0_0_15px_rgba(70,72,212,0.4)] transition-all flex items-center gap-2" href="/replay">
+    Replay Verification <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</nav>
+<main class="pt-28 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<header class="mb-12">
+<h1 class="font-display-lg text-headline-lg-mobile md:text-display-lg mb-2">Identity Resolution Dashboard</h1>
+<p class="text-on-surface-variant font-body-lg">Unified identities, decision audit trail, and replay verification.</p>
+</header>
+<div id="root"><div class="glass-card rounded-xl p-6 animate-pulse text-on-surface-variant">Loading live identity data…</div></div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-surface-container-highest border-t border-glass-stroke">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto gap-6">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">Aether Identity</div>
+<div class="flex gap-6 flex-wrap justify-center">
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:underline font-body-md" href="/audit">Auditability</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:underline font-body-md" href="/replay">Replay</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:underline font-body-md" href="/#features">Features</a>
+</div>
+<div class="text-on-surface-variant font-body-md text-sm">© 2026 Aether Identity. All rights reserved. Precision in Identity Resolution.</div>
+</div>
+</footer>
+<script src="/static/app.js"></script>
+<script>
+/* ---------- Identity colouring ----------
+   At population scale the useful category is what kind of signals resolved the
+   identity, not which platform a single event came from. Three classes, each
+   also carrying a legend + label so identity is never colour-alone. */
+const CLASSES = {
+  edge: { color: "#14B8A6", label: "Edge-verified (biometric)" },
+  mobile: { color: "#4648d4", label: "Mobile-anchored (device)" },
+  web: { color: "#ea580c", label: "Web / behavioral only" },
+};
+const idClass = id => id.platforms.includes("edge") ? "edge"
+  : id.platforms.includes("mobile") ? "mobile" : "web";
+
+/* Short link reason for a focused identity's edges. */
+const LINK_LABEL = { edge_biometric_priority: "biometric", mobile_device_priority: "device",
+                     web_behavior_priority: "behavior", deterministic_fallback: "temporal" };
+
+/* ---------- Overview: one calm dot per identity ---------- */
+function Overview({ identities, focusId, onFocus }) {
+  const W = 1000, H = 500;  // ~2:1, matching the card body so the grid fills it
+  const n = identities.length;
+  if (!n) return h("div", { className: "flex-1 flex flex-col items-center justify-center text-on-surface-variant gap-3" },
+    icon("hub", "text-[48px] opacity-40"),
+    h("p", { className: "font-body-md" }, "No identities match the current view."),
+    h("p", { className: "font-label-mono text-label-mono" }, "Clear the search, or POST events to /events."));
+  const cols = Math.max(1, Math.min(n, Math.ceil(Math.sqrt(n * W / H))));
+  const rows = Math.ceil(n / cols);
+  const cw = W / cols, ch = H / rows;
+  const maxEvents = Math.max(...identities.map(i => i.event_count));
+  const sparse = n <= 24;              // few enough to label every dot
+  return h("svg", { viewBox: `0 0 ${W} ${H}`, className: "w-full h-full", role: "img",
+                    "aria-label": `${n} resolved identities` },
+    identities.map((id, i) => {
+      const x = (i % cols) * cw + cw / 2, y = Math.floor(i / cols) * ch + ch / 2;
+      const cls = CLASSES[idClass(id)];
+      const r = 5 + 6 * Math.sqrt(id.event_count / maxEvents);
+      const on = focusId === id.identity_id;
+      const merged = id.user_ids.length > 1;
+      return h("g", { key: id.identity_id, className: "cursor-pointer", onClick: () => onFocus(id.identity_id) },
+        h("title", null, `${id.identity_id} · ${id.event_count} events · ` +
+          `${id.user_ids.length} linked id(s) · ${id.platforms.join("+")}`),
+        on && h("circle", { cx: x, cy: y, r: r + 7, fill: "none", stroke: "#7C3AED", strokeWidth: 2 }),
+        /* merged identities get a ring — a second channel beyond colour */
+        merged && h("circle", { cx: x, cy: y, r: r + 3.5, fill: "none", stroke: cls.color,
+                                strokeWidth: 1.5, opacity: 0.45 }),
+        h("circle", { cx: x, cy: y, r, fill: cls.color, opacity: on ? 1 : 0.85 }),
+        (sparse || on) && h("text", { x, y: y + r + 13, textAnchor: "middle",
+          style: { font: "600 10px Inter, sans-serif", fill: on ? "#4648d4" : "#464554" } }, id.identity_id));
+    }));
+}
+
+/* ---------- Focus: one identity's real resolution structure ---------- */
+function Focus({ identity, detail, selected, onSelect }) {
+  const W = 1000, H = 400, cx = W / 2, cy = H / 2;
+  const members = identity.user_ids.filter(u => u !== identity.identity_id);
+  /* which decision linked each member id, from its version history */
+  const linkOf = {};
+  (detail ? detail.versions : []).forEach(v => {
+    const u = (v.event_key || "").split("|")[1];
+    if (u && LINK_LABEL[v.strategy]) linkOf[u] = LINK_LABEL[v.strategy];
+  });
+  /* wide ellipse starting at π so 1-2 members spread across the canvas's long
+     axis instead of stacking vertically */
+  const n = members.length;
+  const rx = Math.min(330, 150 + n * 30), ry = Math.min(150, 55 + n * 22);
+  const pos = j => [cx + rx * Math.cos(Math.PI + 2 * Math.PI * j / n),
+                    cy + ry * Math.sin(Math.PI + 2 * Math.PI * j / n)];
+  const cls = CLASSES[idClass(identity)];
+  const node = (key, x, y, r, fill, sub) => {
+    const on = selected === key;
+    return h("g", { key, className: "cursor-pointer", onClick: () => onSelect(key) },
+      on && h("circle", { cx: x, cy: y, r: r + 7, fill: "none", stroke: "#7C3AED", strokeWidth: 2, strokeDasharray: "4 3" }),
+      h("circle", { cx: x, cy: y, r, fill, style: { filter: "drop-shadow(0 2px 6px rgba(70,72,212,0.25))" } }),
+      h("text", { x, y: y + r + 18, textAnchor: "middle",
+        style: { font: "600 13px Inter, sans-serif", fill: on ? "#4648d4" : "#191c1e" } }, key),
+      sub && h("text", { x, y: y + r + 33, textAnchor: "middle",
+        style: { font: "500 11px Inter, sans-serif", fill: "#767586" } }, sub));
+  };
+  /* tight viewBox so a 2-node identity renders large instead of lost on a wide canvas */
+  const padX = 110, padY = 70;
+  const box = n ? `${cx - rx - padX} ${cy - ry - padY} ${2 * (rx + padX)} ${2 * (ry + padY)}`
+                : `${cx - 220} ${cy - 120} 440 240`;
+  return h("svg", { viewBox: box, className: "w-full h-full", role: "img",
+                    "aria-label": `resolution structure for ${identity.identity_id}` },
+    members.map((u, j) => {
+      const [x, y] = pos(j);
+      /* nudge the edge label off the line's midpoint, away from node labels */
+      const mx = cx + (x - cx) * 0.55, my = cy + (y - cy) * 0.55;
+      return h("g", { key: "e" + u },
+        h("line", { x1: cx, y1: cy, x2: x, y2: y, stroke: "#c7c4d7", strokeWidth: 2 }),
+        linkOf[u] && h("g", null,
+          h("rect", { x: mx - 34, y: my - 19, width: 68, height: 16, rx: 8, fill: "#e9ddff", opacity: 0.95 }),
+          h("text", { x: mx, y: my - 7, textAnchor: "middle",
+            style: { font: "600 10px Inter, sans-serif", fill: "#5516be" } }, linkOf[u])));
+    }),
+    members.map((u, j) => { const [x, y] = pos(j); return node(u, x, y, 11, "#8455ef"); }),
+    node(identity.identity_id, cx, cy, 20, cls.color, "canonical identity"),
+    members.length === 0 && h("text", { x: cx, y: cy + 60, textAnchor: "middle",
+      style: { font: "500 12px Inter, sans-serif", fill: "#767586" } },
+      "single-source identity — no cross-platform links resolved"));
+}
+
+/* ---------- Signal heatmap: platform x day event counts (real data) ---------- */
+function Heatmap({ events }) {
+  const days = [...new Set(events.map(e => e.timestamp.slice(0, 10)))].sort();
+  const platforms = ["mobile", "web", "edge"];
+  const counts = {};
+  events.forEach(e => {
+    const k = e.platform + "|" + e.timestamp.slice(0, 10);
+    counts[k] = (counts[k] || 0) + 1;
+  });
+  const max = Math.max(1, ...Object.values(counts));
+  if (!days.length) return h("p", { className: "text-on-surface-variant font-body-md" }, "No signals yet.");
+  return h("div", { className: "space-y-1" },
+    platforms.map(p => h("div", { key: p, className: "flex items-center gap-1" },
+      h("span", { className: "w-14 font-label-mono text-[10px] text-on-surface-variant uppercase shrink-0" }, p),
+      days.map(d => {
+        const c = counts[p + "|" + d] || 0;
+        return h("div", { key: d, title: `${p} · ${d}: ${c} event(s)`,
+          className: "flex-1 h-8 rounded flex items-center justify-center font-label-mono text-[10px] transition-transform hover:scale-105",
+          style: { background: c ? `rgba(124,58,237,${0.12 + 0.75 * c / max})` : "#eceef0",
+                   color: c / max > 0.55 ? "#fff" : "#464554" } }, c || "");
+      }))),
+    h("div", { className: "flex items-center gap-1 pt-1" },
+      h("span", { className: "w-14 shrink-0" }),
+      days.map(d => h("span", { key: d, className: "flex-1 text-center font-label-mono text-[9px] text-on-surface-variant" },
+        d.slice(5).replace("-", "/")))));
+}
+
+/* ---------- Identity Details sidebar ---------- */
+function Details({ selected, identity }) {
+  if (!identity) return h("p", { className: "text-on-surface-variant font-body-md" },
+    "Click a node in the graph to inspect its resolved identity.");
+  const conf = identity.max_confidence;
+  const level = conf == null ? null : conf >= 0.9 ? "High" : conf >= 0.7 ? "Medium" : "Low";
+  return h("div", { className: "space-y-4" },
+    h("div", null,
+      h("div", { className: "font-label-mono text-[10px] text-on-surface-variant uppercase mb-1" }, "Selected Node"),
+      h("div", { className: "font-data-value text-data-value font-semibold bg-primary/10 px-3 py-1 rounded inline-block text-primary" }, selected)),
+    h("div", null,
+      h("div", { className: "font-label-mono text-[10px] text-on-surface-variant uppercase mb-1" }, "Confidence Score"),
+      conf == null
+        ? h("div", { className: "font-body-md text-on-surface-variant" }, "No biometric confidence signals")
+        : h(React.Fragment, null,
+            h("div", { className: "flex items-end gap-2" },
+              h("div", { className: "font-headline-lg text-headline-lg text-on-surface" }, conf.toFixed(2)),
+              h("div", { className: "font-label-mono text-label-mono text-signal-teal mb-1" }, level)),
+            h("div", { className: "w-full bg-surface-container-high h-1.5 rounded-full mt-2" },
+              h("div", { className: "bg-signal-teal h-1.5 rounded-full", style: { width: (conf * 100) + "%" } })))),
+    h("div", null,
+      h("div", { className: "font-label-mono text-[10px] text-on-surface-variant uppercase mb-2" }, "Linked Platforms & Devices"),
+      h("div", { className: "flex flex-wrap gap-2" },
+        identity.platforms.map(p => h("span", { key: p, className: `px-2 py-1 text-xs font-label-mono rounded ${platformMeta(p).chip}` }, p)),
+        identity.device_ids.map(d => h("span", { key: d, className: "px-2 py-1 bg-surface-container text-on-surface-variant text-xs font-label-mono rounded border border-outline-variant" }, d)))),
+    h("div", null,
+      h("div", { className: "font-label-mono text-[10px] text-on-surface-variant uppercase mb-2" }, "Linked User IDs"),
+      h("div", { className: "flex flex-wrap gap-2" },
+        identity.user_ids.map(u => h("span", { key: u, className: "px-2 py-1 bg-primary/5 text-on-surface text-xs font-label-mono rounded border border-primary/10" }, u)))),
+    h("div", { className: "pt-4 border-t border-glass-stroke grid grid-cols-2 gap-3" },
+      h("div", null,
+        h("div", { className: "font-label-mono text-[10px] text-on-surface-variant uppercase mb-1" }, "Events"),
+        h("div", { className: "font-data-value text-data-value" }, identity.event_count)),
+      h("div", null,
+        h("div", { className: "font-label-mono text-[10px] text-on-surface-variant uppercase mb-1" }, "Last Updated"),
+        h("div", { className: "font-data-value text-data-value" }, fmtTs(identity.last_seen)))));
+}
+
+function App() {
+  const [ids, setIds] = React.useState(null);
+  const [audit, setAudit] = React.useState({ decisions: [], rejections: [] });
+  const [events, setEvents] = React.useState([]);
+  const [replay, setReplay] = React.useState(null);
+  const [busy, setBusy] = React.useState(false);
+  const [scrub, setScrub] = React.useState(100);
+  const [focusId, setFocusId] = React.useState(null);
+  const [detail, setDetail] = React.useState(null);
+  const [selNode, setSelNode] = React.useState(null);
+  const [q, setQ] = React.useState("");
+  const [mergedOnly, setMergedOnly] = React.useState(false);
+  const [err, setErr] = React.useState(null);
+
+  const load = () => Promise.all([api("/api/identities"), api("/api/audit"), api("/api/events")])
+    .then(([i, a, e]) => { setIds(i); setAudit(a); setEvents(e); setErr(null); })
+    .catch(e => setErr(String(e)));
+  React.useEffect(() => {
+    load().then(() => verify());
+    const t = setInterval(load, 8000);
+    return () => clearInterval(t);
+  }, []);
+  const verify = () => { setBusy(true);
+    api("/api/replay", { method: "POST" }).then(setReplay).catch(e => setErr(String(e))).finally(() => setBusy(false)); };
+  const focus = id => {
+    setFocusId(id); setSelNode(id); setDetail(null);
+    api(`/api/identities/${encodeURIComponent(id)}`).then(setDetail).catch(e => setErr(String(e)));
+  };
+
+  if (err) return h("div", { className: "glass-card rounded-xl p-6 text-error font-body-md" }, "API error: " + err);
+  if (ids === null) return h("div", { className: "glass-card rounded-xl p-6 animate-pulse text-on-surface-variant" }, "Loading live identity data…");
+
+  const times = events.map(e => new Date(e.timestamp).getTime()).sort((a, b) => a - b);
+  const tMin = times[0], tMax = times[times.length - 1];
+  const tCut = times.length ? tMin + (tMax - tMin) * scrub / 100 : Infinity;
+  const needle = q.trim().toLowerCase();
+  const visible = ids.filter(i =>
+    (!i.first_seen || new Date(i.first_seen).getTime() <= tCut + 999) &&
+    (!mergedOnly || i.user_ids.length > 1) &&
+    (!needle || i.user_ids.some(u => u.toLowerCase().includes(needle))));
+  const acceptedEvents = ids.reduce((s, i) => s + i.event_count, 0);
+  const focused = focusId ? ids.find(i => i.identity_id === focusId) : null;
+  const shownIdentity = focused || (selNode ? ids.find(i => i.user_ids.includes(selNode)) : null);
+  const mergedCount = ids.filter(i => i.user_ids.length > 1).length;
+
+  const kpi = (n, label) => h("div", { className: "glass-card rounded-xl p-6 hover:bg-white/80 transition-all cursor-default group" },
+    h("div", { className: "font-headline-lg text-headline-lg text-primary mb-1 group-hover:scale-105 transition-transform origin-left" }, n),
+    h("div", { className: "font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider" }, label));
+
+  return h(React.Fragment, null,
+    /* KPI Row */
+    h("div", { className: "grid grid-cols-1 md:grid-cols-4 gap-6 mb-12" },
+      kpi(ids.length, "Identities"),
+      kpi(acceptedEvents, "Accepted Events"),
+      kpi(audit.decisions.length, "Decisions"),
+      h("div", { className: "glass-card rounded-xl p-6 flex flex-col justify-between hover:bg-white/80 transition-all" },
+        replay
+          ? h("div", { className: `flex items-center gap-2 mb-2 ${replay.reproduced ? "text-signal-teal" : "text-error"}` },
+              icon(replay.reproduced ? "check_circle" : "error"),
+              h("span", { className: "font-label-mono text-label-mono" },
+                `Replay of ${replay.events_replayed} events ${replay.reproduced ? "" : "MISMATCH"}`))
+          : h("div", { className: "flex items-center gap-2 mb-2 text-on-surface-variant" },
+              icon("pending"), h("span", { className: "font-label-mono text-label-mono" }, "Replay not verified yet")),
+        h("button", { onClick: verify, disabled: busy,
+          className: "w-full py-2 bg-surface-container-high rounded-lg text-on-surface font-label-mono hover:bg-surface-variant transition-colors border border-outline-variant disabled:opacity-60" },
+          busy ? "Verifying…" : "Verify replay"))),
+    h("h2", { className: "font-headline-md mb-6 uppercase tracking-widest text-on-surface-variant text-sm" }, "Identity Graph"),
+    /* Graph + Sidebar */
+    h("div", { className: "grid grid-cols-1 lg:grid-cols-3 gap-6" },
+      h("div", { className: "lg:col-span-2 glass-card rounded-xl p-6 h-[600px] relative overflow-hidden flex flex-col" },
+        /* Toolbar: search / merged filter / focus breadcrumb */
+        h("div", { className: "flex flex-wrap items-center gap-3 mb-4" },
+          focused
+            ? h(React.Fragment, null,
+                h("button", { onClick: () => { setFocusId(null); setDetail(null); setSelNode(null); },
+                  className: "flex items-center gap-1 px-3 py-1.5 rounded-lg border border-outline-variant bg-white/60 hover:bg-white font-label-mono text-label-mono text-on-surface transition-colors" },
+                  icon("arrow_back", "text-[16px]"), "All identities"),
+                h("span", { className: "font-label-mono text-label-mono text-on-surface-variant" },
+                  `Resolution structure · ${focused.user_ids.length} linked id(s) · ${focused.event_count} events`))
+            : h(React.Fragment, null,
+                h("div", { className: "relative flex-grow max-w-xs" },
+                  h("span", { className: "material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-outline text-[18px]" }, "search"),
+                  h("input", { type: "text", value: q, placeholder: "Find identity or user id…",
+                    onChange: e => setQ(e.target.value),
+                    className: "w-full bg-white/60 border border-glass-stroke rounded-lg pl-8 pr-3 py-1.5 font-label-mono text-label-mono text-on-surface focus:outline-none focus:border-primary transition-colors" })),
+                h("button", { onClick: () => setMergedOnly(!mergedOnly),
+                  className: `px-3 py-1.5 rounded-lg border font-label-mono text-label-mono transition-colors ${mergedOnly
+                    ? "bg-primary/10 border-primary/30 text-primary" : "bg-white/60 border-outline-variant text-on-surface-variant hover:bg-white"}` },
+                  `Merged only (${mergedCount})`),
+                h("span", { className: "font-label-mono text-label-mono text-on-surface-variant ml-auto" },
+                  `${visible.length} of ${ids.length} identities`))),
+        h("div", { className: "flex-1 relative overflow-hidden" },
+          focused
+            ? h(Focus, { identity: focused, detail, selected: selNode, onSelect: setSelNode })
+            : h(Overview, { identities: visible, focusId, onFocus: focus })),
+        /* Legend — colour is never the only channel */
+        !focused && h("div", { className: "flex flex-wrap items-center gap-x-4 gap-y-1 pt-3 font-label-mono text-[10px] text-on-surface-variant" },
+          Object.keys(CLASSES).map(k => h("span", { key: k, className: "flex items-center gap-1.5" },
+            h("span", { className: "w-2.5 h-2.5 rounded-full inline-block", style: { background: CLASSES[k].color } }),
+            CLASSES[k].label)),
+          h("span", { className: "flex items-center gap-1.5" },
+            h("span", { className: "w-3 h-3 rounded-full inline-block border-2 border-outline" }), "ring = merged"),
+          h("span", null, "size = event count · click to inspect")),
+        /* Timeline Scrubber */
+        h("div", { className: "mt-4 pt-4 border-t border-glass-stroke" },
+          h("div", { className: "flex flex-wrap justify-between items-center gap-x-3 mb-2" },
+            h("span", { className: "font-label-mono text-label-mono text-on-surface-variant" }, times.length ? scrubTs(new Date(tMin).toISOString()) : "—"),
+            h("span", { className: "font-label-mono text-label-mono text-cyber-purple order-last w-full text-center sm:order-none sm:w-auto" },
+              times.length ? "≤ " + scrubTs(new Date(tCut).toISOString()) : ""),
+            h("span", { className: "font-label-mono text-label-mono text-on-surface-variant" }, times.length ? scrubTs(new Date(tMax).toISOString()) : "—")),
+          h("input", { type: "range", min: 0, max: 100, value: scrub, className: "scrubber",
+                       style: { "--fill": scrub + "%" },
+                       "aria-label": "filter identities by first-seen time",
+                       onChange: e => setScrub(+e.target.value) }))),
+      /* Sidebar */
+      h("div", { className: "flex flex-col gap-6" },
+        h("div", { className: "glass-card rounded-xl p-6" },
+          h("h3", { className: "font-headline-md text-headline-md mb-4 flex items-center gap-2" },
+            icon("fingerprint", "text-primary"), "Identity Details"),
+          h(Details, { selected: selNode, identity: shownIdentity })),
+        h("div", { className: "glass-card rounded-xl p-6 flex-1" },
+          h("h3", { className: "font-headline-md text-[18px] mb-4 flex items-center gap-2" },
+            icon("grid_view", "text-cyber-purple"), "Signal Heatmap"),
+          h(Heatmap, { events })))));
+}
+ReactDOM.createRoot(document.getElementById("root")).render(h(App));
+</script>
+</body></html>

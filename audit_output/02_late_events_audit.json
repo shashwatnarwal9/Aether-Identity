@@ -1,0 +1,235 @@
+{
+  "audit_trail": [
+    {
+      "decision_ts": "2026-08-10T12:00:00.000000+00:00",
+      "event_key": "mobile|bob_mobile|login|2026-08-10T12:00:00.000000+00:00",
+      "identity_id": "bob_mobile",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "iphone-15"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-10T12:00:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "bob_mobile",
+        "last_seen": "2026-08-10T12:00:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "bob_mobile"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 1,
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-10T13:00:00.000000+00:00",
+      "event_key": "edge|bob_edge|face_auth|2026-08-10T13:00:00.000000+00:00",
+      "identity_id": "bob_edge",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "kiosk-2"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-10T13:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "bob_edge",
+        "last_seen": "2026-08-10T13:00:00.000000+00:00",
+        "max_confidence": 0.99,
+        "platforms": [
+          "edge"
+        ],
+        "user_ids": [
+          "bob_edge"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 2,
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-04T12:30:00.000000+00:00",
+      "event_key": "mobile|bob_old|login|2026-08-04T12:30:00.000000+00:00",
+      "identity_id": "bob_old",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "iphone-15"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-04T12:30:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "bob_old",
+        "last_seen": "2026-08-04T12:30:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "bob_old"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 3,
+      "strategy": "new_identity",
+      "version": 1
+    }
+  ],
+  "fixture": "fixtures/02_late_events.json",
+  "identities": [
+    {
+      "behavior": {},
+      "device_ids": [
+        "kiosk-2"
+      ],
+      "event_count": 1,
+      "first_seen": "2026-08-10T13:00:00.000000+00:00",
+      "has_biometric": true,
+      "identity_id": "bob_edge",
+      "last_seen": "2026-08-10T13:00:00.000000+00:00",
+      "max_confidence": 0.99,
+      "platforms": [
+        "edge"
+      ],
+      "user_ids": [
+        "bob_edge"
+      ]
+    },
+    {
+      "behavior": {},
+      "device_ids": [
+        "iphone-15"
+      ],
+      "event_count": 1,
+      "first_seen": "2026-08-10T12:00:00.000000+00:00",
+      "has_biometric": false,
+      "identity_id": "bob_mobile",
+      "last_seen": "2026-08-10T12:00:00.000000+00:00",
+      "max_confidence": null,
+      "platforms": [
+        "mobile"
+      ],
+      "user_ids": [
+        "bob_mobile"
+      ]
+    },
+    {
+      "behavior": {},
+      "device_ids": [
+        "iphone-15"
+      ],
+      "event_count": 1,
+      "first_seen": "2026-08-04T12:30:00.000000+00:00",
+      "has_biometric": false,
+      "identity_id": "bob_old",
+      "last_seen": "2026-08-04T12:30:00.000000+00:00",
+      "max_confidence": null,
+      "platforms": [
+        "mobile"
+      ],
+      "user_ids": [
+        "bob_old"
+      ]
+    }
+  ],
+  "ingest_results": [
+    {
+      "event_key": "mobile|bob_mobile|login|2026-08-10T12:00:00.000000+00:00",
+      "identity_id": "bob_mobile",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "iphone-15"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-10T12:00:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "bob_mobile",
+        "last_seen": "2026-08-10T12:00:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "bob_mobile"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "event_key": "edge|bob_edge|face_auth|2026-08-10T13:00:00.000000+00:00",
+      "identity_id": "bob_edge",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "kiosk-2"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-10T13:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "bob_edge",
+        "last_seen": "2026-08-10T13:00:00.000000+00:00",
+        "max_confidence": 0.99,
+        "platforms": [
+          "edge"
+        ],
+        "user_ids": [
+          "bob_edge"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "event_key": "mobile|bob_old|login|2026-08-04T12:30:00.000000+00:00",
+      "identity_id": "bob_old",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "iphone-15"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-04T12:30:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "bob_old",
+        "last_seen": "2026-08-04T12:30:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "bob_old"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "event_key": "mobile|bob_too_old|login|2026-08-02T11:00:00.000000+00:00",
+      "reason": "event older than 7 days behind watermark 2026-08-10T13:00:00.000000+00:00",
+      "status": "rejected"
+    }
+  ],
+  "replay_verification": {
+    "events_replayed": 3,
+    "reproduced": true
+  },
+  "status_counts": {
+    "accepted": 3,
+    "rejected": 1
+  }
+}

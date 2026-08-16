@@ -1,0 +1,35 @@
+[
+  {
+    "platform": "web",
+    "event_type": "behavior",
+    "timestamp": "2026-08-15T14:00:00Z",
+    "user_id": "grace_web",
+    "device_id": "browser-2",
+    "behavior_data": {
+      "click_freq": 10.0,
+      "mouse_speed": 300.0
+    }
+  },
+  {
+    "platform": "mobile",
+    "event_type": "behavior",
+    "timestamp": "2026-08-15T14:20:00Z",
+    "user_id": "grace_mobile",
+    "device_id": "pixel-9",
+    "behavior_data": {
+      "click_freq": 11.0,
+      "mouse_speed": 320.0
+    }
+  },
+  {
+    "platform": "web",
+    "event_type": "behavior",
+    "timestamp": "2026-08-15T14:40:00Z",
+    "user_id": "heidi_web",
+    "device_id": "browser-3",
+    "behavior_data": {
+      "click_freq": 40.0,
+      "mouse_speed": 900.0
+    }
+  }
+]

@@ -1,0 +1,365 @@
+{
+  "audit_trail": [
+    {
+      "decision_ts": "2026-08-12T10:00:00.000000+00:00",
+      "event_key": "edge|dave_edge|face_auth|2026-08-12T10:00:00.000000+00:00",
+      "identity_id": "dave_edge",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "kiosk-3"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-12T10:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "dave_edge",
+        "last_seen": "2026-08-12T10:00:00.000000+00:00",
+        "max_confidence": 0.99,
+        "platforms": [
+          "edge"
+        ],
+        "user_ids": [
+          "dave_edge"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 1,
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-12T10:15:00.000000+00:00",
+      "event_key": "mobile|erin_mobile|login|2026-08-12T10:15:00.000000+00:00",
+      "identity_id": "erin_mobile",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "phone-77"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-12T10:15:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "erin_mobile",
+        "last_seen": "2026-08-12T10:15:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "erin_mobile"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 2,
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-12T10:30:00.000000+00:00",
+      "event_key": "mobile|dave_mobile|face_auth|2026-08-12T10:30:00.000000+00:00",
+      "identity_id": "dave_edge",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "kiosk-3",
+          "phone-77"
+        ],
+        "event_count": 2,
+        "first_seen": "2026-08-12T10:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "dave_edge",
+        "last_seen": "2026-08-12T10:30:00.000000+00:00",
+        "max_confidence": 0.99,
+        "platforms": [
+          "edge",
+          "mobile"
+        ],
+        "user_ids": [
+          "dave_edge",
+          "dave_mobile"
+        ]
+      },
+      "reason": "biometric match with edge event edge|dave_edge|face_auth|2026-08-12T10:00:00.000000+00:00; conflict among ['dave_edge', 'erin_mobile'] resolved by edge_biometric_priority",
+      "seq": 3,
+      "strategy": "edge_biometric_priority",
+      "version": 2
+    },
+    {
+      "decision_ts": "2026-08-12T10:45:00.000000+00:00",
+      "event_key": "web|erin_web|behavior|2026-08-12T10:45:00.000000+00:00",
+      "identity_id": "erin_web",
+      "merged": {
+        "behavior": {
+          "click_freq": 8.0
+        },
+        "device_ids": [
+          "browser-9"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-12T10:45:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "erin_web",
+        "last_seen": "2026-08-12T10:45:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "web"
+        ],
+        "user_ids": [
+          "erin_web"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 4,
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-12T11:00:00.000000+00:00",
+      "event_key": "mobile|erin_phone2|behavior|2026-08-12T11:00:00.000000+00:00",
+      "identity_id": "dave_edge",
+      "merged": {
+        "behavior": {
+          "click_freq": 8.2
+        },
+        "device_ids": [
+          "kiosk-3",
+          "phone-77"
+        ],
+        "event_count": 3,
+        "first_seen": "2026-08-12T10:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "dave_edge",
+        "last_seen": "2026-08-12T11:00:00.000000+00:00",
+        "max_confidence": 0.99,
+        "platforms": [
+          "edge",
+          "mobile"
+        ],
+        "user_ids": [
+          "dave_edge",
+          "dave_mobile",
+          "erin_phone2"
+        ]
+      },
+      "reason": "device match with mobile event mobile|dave_mobile|face_auth|2026-08-12T10:30:00.000000+00:00; conflict among ['dave_edge', 'erin_mobile', 'erin_web'] resolved by mobile_device_priority",
+      "seq": 5,
+      "strategy": "mobile_device_priority",
+      "version": 3
+    }
+  ],
+  "fixture": "fixtures/04_conflict_tiebreak.json",
+  "identities": [
+    {
+      "behavior": {
+        "click_freq": 8.2
+      },
+      "device_ids": [
+        "kiosk-3",
+        "phone-77"
+      ],
+      "event_count": 3,
+      "first_seen": "2026-08-12T10:00:00.000000+00:00",
+      "has_biometric": true,
+      "identity_id": "dave_edge",
+      "last_seen": "2026-08-12T11:00:00.000000+00:00",
+      "max_confidence": 0.99,
+      "platforms": [
+        "edge",
+        "mobile"
+      ],
+      "user_ids": [
+        "dave_edge",
+        "dave_mobile",
+        "erin_phone2"
+      ]
+    },
+    {
+      "behavior": {},
+      "device_ids": [
+        "phone-77"
+      ],
+      "event_count": 1,
+      "first_seen": "2026-08-12T10:15:00.000000+00:00",
+      "has_biometric": false,
+      "identity_id": "erin_mobile",
+      "last_seen": "2026-08-12T10:15:00.000000+00:00",
+      "max_confidence": null,
+      "platforms": [
+        "mobile"
+      ],
+      "user_ids": [
+        "erin_mobile"
+      ]
+    },
+    {
+      "behavior": {
+        "click_freq": 8.0
+      },
+      "device_ids": [
+        "browser-9"
+      ],
+      "event_count": 1,
+      "first_seen": "2026-08-12T10:45:00.000000+00:00",
+      "has_biometric": false,
+      "identity_id": "erin_web",
+      "last_seen": "2026-08-12T10:45:00.000000+00:00",
+      "max_confidence": null,
+      "platforms": [
+        "web"
+      ],
+      "user_ids": [
+        "erin_web"
+      ]
+    }
+  ],
+  "ingest_results": [
+    {
+      "event_key": "edge|dave_edge|face_auth|2026-08-12T10:00:00.000000+00:00",
+      "identity_id": "dave_edge",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "kiosk-3"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-12T10:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "dave_edge",
+        "last_seen": "2026-08-12T10:00:00.000000+00:00",
+        "max_confidence": 0.99,
+        "platforms": [
+          "edge"
+        ],
+        "user_ids": [
+          "dave_edge"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "event_key": "mobile|erin_mobile|login|2026-08-12T10:15:00.000000+00:00",
+      "identity_id": "erin_mobile",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "phone-77"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-12T10:15:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "erin_mobile",
+        "last_seen": "2026-08-12T10:15:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "erin_mobile"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "event_key": "mobile|dave_mobile|face_auth|2026-08-12T10:30:00.000000+00:00",
+      "identity_id": "dave_edge",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "kiosk-3",
+          "phone-77"
+        ],
+        "event_count": 2,
+        "first_seen": "2026-08-12T10:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "dave_edge",
+        "last_seen": "2026-08-12T10:30:00.000000+00:00",
+        "max_confidence": 0.99,
+        "platforms": [
+          "edge",
+          "mobile"
+        ],
+        "user_ids": [
+          "dave_edge",
+          "dave_mobile"
+        ]
+      },
+      "reason": "biometric match with edge event edge|dave_edge|face_auth|2026-08-12T10:00:00.000000+00:00; conflict among ['dave_edge', 'erin_mobile'] resolved by edge_biometric_priority",
+      "status": "accepted",
+      "strategy": "edge_biometric_priority",
+      "version": 2
+    },
+    {
+      "event_key": "web|erin_web|behavior|2026-08-12T10:45:00.000000+00:00",
+      "identity_id": "erin_web",
+      "merged": {
+        "behavior": {
+          "click_freq": 8.0
+        },
+        "device_ids": [
+          "browser-9"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-12T10:45:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "erin_web",
+        "last_seen": "2026-08-12T10:45:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "web"
+        ],
+        "user_ids": [
+          "erin_web"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "event_key": "mobile|erin_phone2|behavior|2026-08-12T11:00:00.000000+00:00",
+      "identity_id": "dave_edge",
+      "merged": {
+        "behavior": {
+          "click_freq": 8.2
+        },
+        "device_ids": [
+          "kiosk-3",
+          "phone-77"
+        ],
+        "event_count": 3,
+        "first_seen": "2026-08-12T10:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "dave_edge",
+        "last_seen": "2026-08-12T11:00:00.000000+00:00",
+        "max_confidence": 0.99,
+        "platforms": [
+          "edge",
+          "mobile"
+        ],
+        "user_ids": [
+          "dave_edge",
+          "dave_mobile",
+          "erin_phone2"
+        ]
+      },
+      "reason": "device match with mobile event mobile|dave_mobile|face_auth|2026-08-12T10:30:00.000000+00:00; conflict among ['dave_edge', 'erin_mobile', 'erin_web'] resolved by mobile_device_priority",
+      "status": "accepted",
+      "strategy": "mobile_device_priority",
+      "version": 3
+    }
+  ],
+  "replay_verification": {
+    "events_replayed": 5,
+    "reproduced": true
+  },
+  "status_counts": {
+    "accepted": 5
+  }
+}

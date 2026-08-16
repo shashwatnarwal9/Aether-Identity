@@ -1,0 +1,244 @@
+{
+  "audit_trail": [
+    {
+      "decision_ts": "2026-08-15T14:00:00.000000+00:00",
+      "event_key": "web|grace_web|behavior|2026-08-15T14:00:00.000000+00:00",
+      "identity_id": "grace_web",
+      "merged": {
+        "behavior": {
+          "click_freq": 10.0,
+          "mouse_speed": 300.0
+        },
+        "device_ids": [
+          "browser-2"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-15T14:00:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "grace_web",
+        "last_seen": "2026-08-15T14:00:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "web"
+        ],
+        "user_ids": [
+          "grace_web"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 1,
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-15T14:20:00.000000+00:00",
+      "event_key": "mobile|grace_mobile|behavior|2026-08-15T14:20:00.000000+00:00",
+      "identity_id": "grace_mobile",
+      "merged": {
+        "behavior": {
+          "click_freq": 11.0,
+          "mouse_speed": 320.0
+        },
+        "device_ids": [
+          "browser-2",
+          "pixel-9"
+        ],
+        "event_count": 2,
+        "first_seen": "2026-08-15T14:00:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "grace_mobile",
+        "last_seen": "2026-08-15T14:20:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile",
+          "web"
+        ],
+        "user_ids": [
+          "grace_mobile",
+          "grace_web"
+        ]
+      },
+      "reason": "behavior match with web event web|grace_web|behavior|2026-08-15T14:00:00.000000+00:00",
+      "seq": 2,
+      "strategy": "web_behavior_priority",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-15T14:40:00.000000+00:00",
+      "event_key": "web|heidi_web|behavior|2026-08-15T14:40:00.000000+00:00",
+      "identity_id": "heidi_web",
+      "merged": {
+        "behavior": {
+          "click_freq": 40.0,
+          "mouse_speed": 900.0
+        },
+        "device_ids": [
+          "browser-3"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-15T14:40:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "heidi_web",
+        "last_seen": "2026-08-15T14:40:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "web"
+        ],
+        "user_ids": [
+          "heidi_web"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 3,
+      "strategy": "new_identity",
+      "version": 1
+    }
+  ],
+  "fixture": "fixtures/06_behavior_link.json",
+  "identities": [
+    {
+      "behavior": {
+        "click_freq": 11.0,
+        "mouse_speed": 320.0
+      },
+      "device_ids": [
+        "browser-2",
+        "pixel-9"
+      ],
+      "event_count": 2,
+      "first_seen": "2026-08-15T14:00:00.000000+00:00",
+      "has_biometric": false,
+      "identity_id": "grace_mobile",
+      "last_seen": "2026-08-15T14:20:00.000000+00:00",
+      "max_confidence": null,
+      "platforms": [
+        "mobile",
+        "web"
+      ],
+      "user_ids": [
+        "grace_mobile",
+        "grace_web"
+      ]
+    },
+    {
+      "behavior": {
+        "click_freq": 40.0,
+        "mouse_speed": 900.0
+      },
+      "device_ids": [
+        "browser-3"
+      ],
+      "event_count": 1,
+      "first_seen": "2026-08-15T14:40:00.000000+00:00",
+      "has_biometric": false,
+      "identity_id": "heidi_web",
+      "last_seen": "2026-08-15T14:40:00.000000+00:00",
+      "max_confidence": null,
+      "platforms": [
+        "web"
+      ],
+      "user_ids": [
+        "heidi_web"
+      ]
+    }
+  ],
+  "ingest_results": [
+    {
+      "event_key": "web|grace_web|behavior|2026-08-15T14:00:00.000000+00:00",
+      "identity_id": "grace_web",
+      "merged": {
+        "behavior": {
+          "click_freq": 10.0,
+          "mouse_speed": 300.0
+        },
+        "device_ids": [
+          "browser-2"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-15T14:00:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "grace_web",
+        "last_seen": "2026-08-15T14:00:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "web"
+        ],
+        "user_ids": [
+          "grace_web"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "event_key": "mobile|grace_mobile|behavior|2026-08-15T14:20:00.000000+00:00",
+      "identity_id": "grace_mobile",
+      "merged": {
+        "behavior": {
+          "click_freq": 11.0,
+          "mouse_speed": 320.0
+        },
+        "device_ids": [
+          "browser-2",
+          "pixel-9"
+        ],
+        "event_count": 2,
+        "first_seen": "2026-08-15T14:00:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "grace_mobile",
+        "last_seen": "2026-08-15T14:20:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile",
+          "web"
+        ],
+        "user_ids": [
+          "grace_mobile",
+          "grace_web"
+        ]
+      },
+      "reason": "behavior match with web event web|grace_web|behavior|2026-08-15T14:00:00.000000+00:00",
+      "status": "accepted",
+      "strategy": "web_behavior_priority",
+      "version": 1
+    },
+    {
+      "event_key": "web|heidi_web|behavior|2026-08-15T14:40:00.000000+00:00",
+      "identity_id": "heidi_web",
+      "merged": {
+        "behavior": {
+          "click_freq": 40.0,
+          "mouse_speed": 900.0
+        },
+        "device_ids": [
+          "browser-3"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-15T14:40:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "heidi_web",
+        "last_seen": "2026-08-15T14:40:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "web"
+        ],
+        "user_ids": [
+          "heidi_web"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    }
+  ],
+  "replay_verification": {
+    "events_replayed": 3,
+    "reproduced": true
+  },
+  "status_counts": {
+    "accepted": 3
+  }
+}

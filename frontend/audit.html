@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audit History - Aether Identity</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/static/theme.js"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<style>
+    .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal;
+      font-size: 24px; line-height: 1; display: inline-block; white-space: nowrap; direction: ltr;
+      -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #c7c4d7; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #767586; }
+</style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen relative overflow-x-hidden antialiased flex flex-col">
+<div class="fixed inset-0 pointer-events-none z-[-1] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-background to-background"></div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/40 backdrop-blur-xl border-b border-glass-stroke shadow-sm">
+<div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md font-bold text-on-background flex items-center gap-2" href="/">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">fingerprint</span>
+    Aether Identity
+</a>
+<ul class="hidden md:flex space-x-8 items-center">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/">Features</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/dashboard">Technology</a></li>
+<li><a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1 font-semibold" href="/audit">Audit</a></li>
+</ul>
+<div class="hidden md:block">
+<a class="bg-primary hover:bg-primary-container text-on-primary font-body-md text-body-md px-4 py-2 rounded-lg transition-all duration-150 active:scale-95 shadow-sm shadow-primary/20" href="/dashboard">Open Dashboard</a>
+</div>
+</div>
+</nav>
+<main class="flex-grow pt-[104px] pb-16 px-margin-mobile md:px-gutter max-w-container-max mx-auto w-full">
+<div id="root"><div class="bg-white/40 border border-glass-stroke rounded-xl p-6 animate-pulse text-on-surface-variant">Loading audit trail…</div></div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-surface border-t border-glass-stroke mt-auto z-10 relative">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left relative z-10">
+<div class="col-span-1 flex flex-col items-center md:items-start gap-4">
+<div class="font-headline-md text-headline-md font-bold text-on-background flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">fingerprint</span> Aether
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2026 Aether Identity. Built for Auditability.</p>
+</div>
+<div class="col-span-1 flex flex-col gap-3">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/#features">Features</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/dashboard">Technology</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/audit">Audit</a>
+</div>
+<div class="col-span-1 flex flex-col gap-3">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/replay">Replay Verification</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/api/audit/export">Audit Export</a>
+</div>
+<div class="col-span-1 hidden md:flex justify-end items-end opacity-20">
+<span class="material-symbols-outlined text-display-lg text-primary">hub</span>
+</div>
+</div>
+</footer>
+<script src="/static/app.js"></script>
+<script>
+const PAGE = 8;
+
+function TraceSignal({ ev }) {
+  if (!ev) return null;
+  const meta = platformMeta(ev.platform);
+  return h("div", { className: "bg-surface-container-lowest/80 border border-glass-stroke rounded-lg p-3 flex gap-4 items-center shadow-sm relative group hover:border-primary/50 transition-colors" },
+    h("div", { className: `p-2 rounded-lg border shrink-0 ${meta.box}` }, icon(meta.icon)),
+    h("div", { className: "flex-grow min-w-0" },
+      h("div", { className: "flex justify-between items-center mb-1 gap-2" },
+        h("span", { className: "font-body-md text-body-md font-semibold text-on-surface" }, meta.name),
+        h("span", { className: "font-label-mono text-label-mono text-on-surface-variant whitespace-nowrap" },
+          (ev.timestamp || "").replace(/^\d{4}-\d{2}-\d{2}T/, "").replace(/(\+00:00|Z)$/, "Z"))),
+      h("p", { className: "font-data-value text-data-value text-on-surface-variant truncate" }, eventDesc(ev))));
+}
+
+/* +/- diff between the previous and new merged identity record */
+function stateDiff(prev, next) {
+  const lines = [];
+  const keys = [...new Set([...Object.keys(prev || {}), ...Object.keys(next || {})])].sort();
+  keys.forEach(k => {
+    const a = JSON.stringify((prev || {})[k]), b = JSON.stringify((next || {})[k]);
+    if (a !== b) {
+      if (a !== undefined && prev) lines.push(["-", `"${k}": ${a}`]);
+      if (b !== undefined) lines.push(["+", `"${k}": ${b}`]);
+    }
+  });
+  return lines;
+}
+
+function TracePanel({ row, detail, onClose }) {
+  if (!row) return h("aside", { className: "w-full lg:w-1/3 bg-white/50 backdrop-blur-3xl border border-glass-stroke rounded-xl p-6 shadow-[0_8px_32px_rgba(0,0,0,0.05)] sticky top-28 text-on-surface-variant" },
+    h("h2", { className: "font-headline-md text-headline-md text-on-background mb-2" }, "Decision Trace"),
+    h("p", { className: "font-body-md" }, "Select a row to trace how that decision was made."));
+  const isRejection = !!row.kind;
+  const diff = detail && !isRejection ? stateDiff(detail.previous_merged, detail.merged) : [];
+  const viaEvent = detail && detail.reason && detail.reason.match(/event ([a-z]+\|[^\s;]+)/);
+  return h("aside", { className: "w-full lg:w-1/3 bg-white/50 backdrop-blur-3xl border border-glass-stroke rounded-xl p-6 shadow-[0_8px_32px_rgba(0,0,0,0.05)] flex flex-col gap-6 relative overflow-hidden sticky top-28" },
+    h("div", { className: "absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" }),
+    h("div", { className: "flex justify-between items-start z-10" },
+      h("div", null,
+        h("h2", { className: "font-headline-md text-headline-md text-on-background mb-1" }, "Decision Trace"),
+        h("div", { className: "font-label-mono text-label-mono text-primary bg-primary/10 inline-block px-2 py-1 rounded-md border border-primary/20" },
+          row.user_id || "unknown")),
+      h("button", { className: "text-on-surface-variant hover:text-on-surface transition-colors", onClick: onClose,
+                    "aria-label": "close trace panel" }, icon("close"))),
+    h("div", { className: "z-10" },
+      h("h3", { className: "font-label-mono text-label-mono text-on-surface-variant uppercase mb-3 font-semibold tracking-wider" }, "Ingested Signals"),
+      h("div", { className: "flex flex-col gap-3 relative" },
+        h(TraceSignal, { ev: isRejection ? row.raw : detail && detail.event }),
+        viaEvent && h("div", { className: "font-label-mono text-[11px] text-on-surface-variant pl-2" },
+          "matched against ", h("span", { className: "text-primary break-all" }, viaEvent[1])))),
+    h("div", { className: "z-10" },
+      h("h3", { className: "font-label-mono text-label-mono text-on-surface-variant uppercase mb-3 font-semibold tracking-wider" }, "State Reconciliation"),
+      h("div", { className: "bg-data-node-bg rounded-lg p-4 font-label-mono text-label-mono text-outline-variant overflow-x-auto border border-glass-stroke shadow-inner" },
+        isRejection
+          ? h("div", { className: "text-surface-variant" },
+              h("div", { className: "text-error mb-2" }, "! no state change — event " + row.kind),
+              h("div", null, row.reason))
+          : !detail ? h("div", { className: "animate-pulse" }, "loading trace…")
+          : diff.length === 0 ? h("div", null, "no attribute changes")
+          : diff.slice(0, 12).map((l, i) => h("div", { key: i, className: "mb-1 whitespace-pre" },
+              h("span", { className: l[0] === "+" ? "text-signal-teal" : "text-error" }, `${l[0]} ${l[1]}`))))),
+    !isRejection && h("div", { className: "z-10" },
+      h("h3", { className: "font-label-mono text-label-mono text-on-surface-variant uppercase mb-3 font-semibold tracking-wider" }, "Resolution Reason"),
+      h("p", { className: "font-data-value text-data-value text-on-surface-variant" }, detail ? detail.reason : "…")),
+    h("div", { className: "z-10 mt-auto pt-4 border-t border-glass-stroke" },
+      isRejection
+        ? h("div", { className: "bg-error/5 border border-error/20 rounded-lg p-4 flex gap-3 items-start" },
+            icon("block", "text-error shrink-0"),
+            h("div", null,
+              h("h4", { className: "font-body-md text-body-md font-medium text-on-surface mb-1" },
+                row.kind === "duplicate" ? "Duplicate — state untouched (idempotent)" : "Event Rejected"),
+              h("p", { className: "font-label-mono text-label-mono text-on-surface-variant break-all" }, row.reason)))
+        : h("div", { className: "bg-surface-tint/5 border border-primary/20 rounded-lg p-4 flex gap-3 items-start" },
+            icon("verified_user", "text-primary shrink-0"),
+            h("div", null,
+              h("h4", { className: "font-body-md text-body-md font-medium text-on-surface mb-1" }, "Cryptographic Seal Valid"),
+              h("p", { className: "font-label-mono text-label-mono text-on-surface-variant break-all" },
+                "Hash: " + (detail ? detail.hash : "computing…"))))));
+}
+
+function App() {
+  const [data, setData] = React.useState(null);
+  const [q, setQ] = React.useState("");
+  const [platform, setPlatform] = React.useState("all");
+  const [etype, setEtype] = React.useState("all");
+  const [range, setRange] = React.useState("7");
+  const [page, setPage] = React.useState(0);
+  const [sel, setSel] = React.useState(null);
+  const [detail, setDetail] = React.useState(null);
+  const [replayMsg, setReplayMsg] = React.useState(null);
+  const [busy, setBusy] = React.useState(false);
+  const [err, setErr] = React.useState(null);
+
+  React.useEffect(() => {
+    api("/api/audit").then(d => {
+      setData(d);
+      const rows = buildRows(d);
+      if (rows.length) select(rows[0]);
+    }).catch(e => setErr(String(e)));
+  }, []);
+
+  const buildRows = d => [
+    ...d.decisions.map(x => ({ ...x, sortTs: x.decision_ts || "" })),
+    ...d.rejections.map(x => ({ ...x, sortTs: x.decision_ts || "" })),
+  ].sort((a, b) => b.sortTs.localeCompare(a.sortTs));
+
+  const select = row => {
+    setSel(row);
+    setDetail(null);
+    if (!row.kind) api(`/api/decision/${row.seq}`).then(setDetail).catch(e => setErr(String(e)));
+  };
+
+  const replayAll = () => { setBusy(true);
+    api("/api/replay", { method: "POST" })
+      .then(r => setReplayMsg(r.reproduced ? `Replay verified — ${r.events_replayed} events reproduced identically` : "MISMATCH — replay diverged!"))
+      .catch(e => setErr(String(e))).finally(() => setBusy(false)); };
+
+  if (err) return h("div", { className: "bg-white/40 border border-glass-stroke rounded-xl p-6 text-error" }, "API error: " + err);
+  if (!data) return h("div", { className: "bg-white/40 border border-glass-stroke rounded-xl p-6 animate-pulse text-on-surface-variant" }, "Loading audit trail…");
+
+  let rows = buildRows(data);
+  const newest = rows.find(r => r.sortTs);
+  const cutoff = range === "all" || !newest ? null
+    : new Date(new Date(newest.sortTs).getTime() - (+range) * 86400000).toISOString();
+  rows = rows.filter(r =>
+    (platform === "all" || r.platform === platform) &&
+    (etype === "all" || r.event_type === etype) &&
+    (!cutoff || (r.sortTs && r.sortTs >= cutoff)) &&
+    (!q || [r.user_id, r.identity_id, r.event_key].some(v => v && v.toLowerCase().includes(q.toLowerCase()))));
+  const pages = Math.max(1, Math.ceil(rows.length / PAGE));
+  const pg = Math.min(page, pages - 1);
+  const view = rows.slice(pg * PAGE, pg * PAGE + PAGE);
+
+  const filterSel = (value, onChange, opts) => h("div", { className: "relative" },
+    h("select", { value, onChange: e => { onChange(e.target.value); setPage(0); },
+      className: "appearance-none bg-white/50 backdrop-blur-md border border-glass-stroke rounded-lg pl-4 pr-10 py-2 font-body-md text-body-md text-on-surface hover:bg-white/70 focus:outline-none focus:border-primary transition-colors cursor-pointer shadow-sm" },
+      opts.map(([v, l]) => h("option", { key: v, value: v }, l))),
+    h("span", { className: "material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" }, "expand_more"));
+
+  return h(React.Fragment, null,
+    /* Header */
+    h("header", { className: "flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10" },
+      h("div", null,
+        h("h1", { className: "font-display-lg text-headline-lg-mobile md:text-display-lg text-on-background mb-2" }, "Audit History"),
+        h("p", { className: "font-body-lg text-body-lg text-on-surface-variant" }, "Trace and replay identity resolution decisions across the federated network.")),
+      h("div", { className: "flex items-center gap-4 w-full md:w-auto flex-wrap" },
+        h("div", { className: "relative flex-grow md:flex-grow-0 w-full md:w-80 group" },
+          h("span", { className: "material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors" }, "search"),
+          h("input", { type: "text", value: q, placeholder: "Search by User ID or Hash...",
+            onChange: e => { setQ(e.target.value); setPage(0); },
+            className: "w-full bg-white/60 backdrop-blur-md border border-glass-stroke rounded-lg pl-10 pr-4 py-3 font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm transition-all placeholder:text-outline-variant" })),
+        h("button", { onClick: replayAll, disabled: busy,
+          className: "flex items-center gap-2 bg-gradient-to-r from-primary to-cyber-purple hover:from-primary-container hover:to-tertiary-container text-on-primary font-label-mono text-label-mono px-6 py-3 rounded-lg shadow-[0_0_15px_rgba(124,58,237,0.3)] hover:shadow-[0_0_20px_rgba(124,58,237,0.5)] transition-all active:scale-95 whitespace-nowrap disabled:opacity-60" },
+          h("span", { className: "material-symbols-outlined text-[20px]" }, "replay"),
+          busy ? "Replaying…" : "Replay All"))),
+    replayMsg && h("div", { className: `mb-6 px-4 py-3 rounded-lg border font-label-mono text-label-mono ${replayMsg.startsWith("MISMATCH") ? "bg-error/10 text-error border-error/20" : "bg-signal-teal/10 text-signal-teal border-signal-teal/20"}` }, replayMsg),
+    /* Filter Bar */
+    h("div", { className: "flex flex-wrap gap-4 mb-8" },
+      filterSel(platform, setPlatform, [["all", "Platform: All"], ["mobile", "Mobile App"], ["web", "Web Portal"], ["edge", "Edge Device"]]),
+      filterSel(etype, setEtype, [["all", "Event: All Types"], ["login", "Login"], ["face_auth", "Face Auth"], ["behavior", "Behavior"]]),
+      filterSel(range, setRange, [["1", "Last 24 Hours"], ["7", "Last 7 Days"], ["30", "Last 30 Days"], ["all", "All Time"]])),
+    /* Master/Detail */
+    h("div", { className: "flex flex-col lg:flex-row gap-8 items-start" },
+      h("div", { className: "flex-1 w-full lg:w-2/3 bg-white/40 backdrop-blur-2xl border border-glass-stroke rounded-xl shadow-sm overflow-hidden flex flex-col" },
+        h("div", { className: "overflow-x-auto" },
+          h("table", { className: "w-full text-left border-collapse" },
+            h("thead", null, h("tr", { className: "bg-surface-container-low/50 border-b border-glass-stroke" },
+              ["Timestamp (UTC)", "User ID", "Resolution Strategy", "Confidence", "Status", ""].map((c, i) =>
+                h("th", { key: i, className: "font-label-mono text-label-mono text-on-surface-variant uppercase py-4 px-6 font-semibold" }, c)))),
+            h("tbody", { className: "divide-y divide-glass-stroke/50" },
+              view.length === 0
+                ? h("tr", null, h("td", { colSpan: 6, className: "py-10 px-6 text-center text-on-surface-variant font-body-md" },
+                    "No audit entries match the current filters."))
+                : view.map(r => {
+                    const meta = strategyMeta(r.kind || r.strategy);
+                    const isSel = sel && ((r.seq && sel.seq === r.seq && !sel.kind) || (r.rseq && sel.rseq === r.rseq && sel.kind));
+                    return h("tr", { key: (r.kind ? "r" : "d") + (r.seq || r.rseq),
+                        onClick: () => select(r),
+                        className: `hover:bg-white/60 transition-colors cursor-pointer group ${isSel ? "bg-primary/5" : ""}` },
+                      h("td", { className: "py-4 px-6 font-label-mono text-label-mono text-on-surface-variant whitespace-nowrap" }, shortTs(r.sortTs)),
+                      h("td", { className: `py-4 px-6 font-data-value text-data-value font-medium ${isSel ? "text-primary" : "text-on-surface group-hover:text-primary"} transition-colors` }, r.user_id || "unknown"),
+                      h("td", { className: "py-4 px-6 font-body-md text-body-md text-on-surface" }, meta.label),
+                      h("td", { className: "py-4 px-6" },
+                        r.confidence == null
+                          ? h("span", { className: "font-label-mono text-label-mono text-on-surface-variant" }, "—")
+                          : h("div", { className: "flex items-center gap-2" },
+                              h("div", { className: "w-16 h-2 bg-surface-variant rounded-full overflow-hidden" },
+                                h("div", { className: `h-full ${meta.bar}`, style: { width: (r.confidence * 100) + "%" } })),
+                              h("span", { className: "font-label-mono text-label-mono text-on-surface" }, r.confidence.toFixed(2)))),
+                      h("td", { className: "py-4 px-6" },
+                        h("span", { className: `inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-label-mono text-label-mono border ${meta.chip}` },
+                          h("span", { className: "material-symbols-outlined text-[14px]" }, meta.icon), meta.status)),
+                      h("td", { className: "py-4 px-6 text-right" },
+                        h("span", { className: "material-symbols-outlined text-on-surface-variant group-hover:text-primary" },
+                          isSel ? "visibility" : "chevron_right")));
+                  })))),
+        /* Pagination */
+        h("div", { className: "bg-surface-container-low/30 border-t border-glass-stroke p-4 flex justify-between items-center" },
+          h("span", { className: "font-body-md text-body-md text-on-surface-variant" },
+            rows.length ? `Showing ${pg * PAGE + 1} to ${Math.min((pg + 1) * PAGE, rows.length)} of ${rows.length} entries` : "0 entries"),
+          h("div", { className: "flex gap-2" },
+            h("button", { disabled: pg === 0, onClick: () => setPage(pg - 1), "aria-label": "previous page",
+              className: "p-2 rounded-lg border border-glass-stroke bg-white/50 hover:bg-white text-on-surface-variant disabled:opacity-50" },
+              h("span", { className: "material-symbols-outlined" }, "navigate_before")),
+            h("button", { disabled: pg >= pages - 1, onClick: () => setPage(pg + 1), "aria-label": "next page",
+              className: "p-2 rounded-lg border border-glass-stroke bg-white/50 hover:bg-white text-on-surface hover:text-primary transition-colors disabled:opacity-50" },
+              h("span", { className: "material-symbols-outlined" }, "navigate_next"))))),
+      h(TracePanel, { row: sel, detail, onClose: () => { setSel(null); setDetail(null); } })));
+}
+ReactDOM.createRoot(document.getElementById("root")).render(h(App));
+</script>
+</body></html>

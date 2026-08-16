@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether Identity</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal;
+      font-size: 24px; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block;
+      white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; }
+</style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/static/theme.js"></script>
+</head>
+<body class="bg-surface text-on-surface font-body-md text-body-md antialiased overflow-x-hidden min-h-screen relative selection:bg-primary-container selection:text-on-primary-container">
+<!-- Ambient Background Glows -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-tertiary/10 blur-[150px] rounded-full"></div>
+</div>
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-white/40 backdrop-blur-xl border-b border-glass-stroke shadow-sm">
+<div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+<a class="flex items-center gap-2" href="/">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">fingerprint</span>
+<span class="font-headline-md text-headline-md font-bold text-on-background">Aether Identity</span>
+</a>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="/">Features</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/dashboard">Technology</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/audit">Audit</a>
+</nav>
+<div class="flex items-center">
+<a class="bg-primary text-on-primary font-label-mono text-label-mono px-6 py-2 rounded-lg hover:scale-95 duration-150 transition-transform shadow-[0_0_15px_rgba(70,72,212,0.3)]" href="/dashboard">Open Dashboard</a>
+</div>
+</div>
+</header>
+<main class="relative z-10 pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto space-y-32">
+<!-- Hero Section -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="space-y-8">
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight">
+    Identity Resolution with <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyber-purple">Temporal Replay</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+    Reconcile multi-source biometric and behavioral signals into a deterministic, auditable identity graph.
+</p>
+<div class="flex flex-wrap gap-4 pt-4">
+<a class="bg-gradient-to-r from-primary to-tertiary text-on-primary font-label-mono text-label-mono px-8 py-4 rounded-xl shadow-[0_0_25px_rgba(70,72,212,0.4)] hover:scale-105 transition-all duration-300 flex items-center gap-2" href="/dashboard">
+    Explore the Platform
+    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+<a class="bg-white/50 backdrop-blur-[20px] border border-glass-stroke text-primary font-label-mono text-label-mono px-8 py-4 rounded-xl hover:bg-white/80 transition-all duration-300 flex items-center gap-2 shadow-sm" href="/replay">
+<span class="material-symbols-outlined text-[18px]">play_circle</span>
+    Watch Replay
+</a>
+</div>
+</div>
+<div class="relative w-full aspect-square rounded-3xl overflow-hidden bg-white/20 backdrop-blur-[40px] border border-glass-stroke shadow-lg flex items-center justify-center p-8 group">
+<img alt="Identity Resolution Flow" class="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(70,72,212,0.2)] group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ0UWcmcNAP2MsOMyckTxzVtye6n9zv_Ql6-8y05aV6TDjx1IQ0OaRtbP1zsbJktNStpHg27ATmWmlvOvSnw_MGG6GnBQORt1QG4RVY-9mfiwqFcHZk9YqvF6gEWz44O73S8iYAlwXfRH9cd2HnAoLivYqQRR_s2-h9MWiqDS_pZrdD5CRuLxuEAhcILvGDDxyZ4UZtLiuiiCnfnTcRN8x8HAJMFlkFjKcyf_DnI1J7cCILbv72g_QSw"/>
+<div class="absolute top-10 left-10 w-24 h-24 bg-white/30 backdrop-blur-[10px] border border-white/50 rounded-2xl rotate-12 shadow-sm animate-pulse"></div>
+<div class="absolute bottom-10 right-10 w-32 h-32 bg-primary/10 backdrop-blur-[15px] border border-white/40 rounded-full shadow-sm"></div>
+</div>
+</section>
+<!-- Feature Grid (Bento Style) -->
+<section class="space-y-12" id="features">
+<div class="text-center space-y-4">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Architected for Precision</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">Enterprise-grade capabilities ensuring absolute certainty in identity verification across all touchpoints.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white/60 backdrop-blur-[30px] border border-glass-stroke rounded-2xl p-8 hover:bg-white/80 transition-all duration-300 group shadow-sm hover:shadow-[0_10px_40px_rgba(0,0,0,0.05)] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full transition-transform group-hover:scale-110"></div>
+<div class="w-14 h-14 bg-primary-fixed/50 rounded-xl flex items-center justify-center mb-6 border border-primary-fixed-dim/30">
+<span class="material-symbols-outlined text-primary">api</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Asynchronous Ingestion</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Seamlessly aggregate signals across heterogeneous platforms without blocking critical user flows.</p>
+<div class="flex gap-2">
+<span class="bg-surface-container text-on-surface-variant font-label-mono text-[10px] px-2 py-1 rounded-md border border-outline-variant/30">Mobile</span>
+<span class="bg-surface-container text-on-surface-variant font-label-mono text-[10px] px-2 py-1 rounded-md border border-outline-variant/30">Web</span>
+<span class="bg-surface-container text-on-surface-variant font-label-mono text-[10px] px-2 py-1 rounded-md border border-outline-variant/30">Edge</span>
+</div>
+</div>
+<div class="bg-white/60 backdrop-blur-[30px] border border-glass-stroke rounded-2xl p-8 hover:bg-white/80 transition-all duration-300 group shadow-sm hover:shadow-[0_10px_40px_rgba(0,0,0,0.05)] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-tertiary/5 rounded-bl-full transition-transform group-hover:scale-110"></div>
+<div class="w-14 h-14 bg-tertiary-fixed/50 rounded-xl flex items-center justify-center mb-6 border border-tertiary-fixed-dim/30">
+<span class="material-symbols-outlined text-tertiary">my_location</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Deterministic Resolution</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Utilize advanced cosine distance metrics and spatial proximity logic to instantly match identities with zero ambiguity.</p>
+</div>
+<div class="bg-white/60 backdrop-blur-[30px] border border-glass-stroke rounded-2xl p-8 hover:bg-white/80 transition-all duration-300 group shadow-sm hover:shadow-[0_10px_40px_rgba(0,0,0,0.05)] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-bl-full transition-transform group-hover:scale-110"></div>
+<div class="w-14 h-14 bg-secondary-fixed/50 rounded-xl flex items-center justify-center mb-6 border border-secondary-fixed-dim/30">
+<span class="material-symbols-outlined text-secondary">history</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Immutable Audit Log</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Every verification event is cryptographically sealed, enabling full temporal replay for compliance and forensics.</p>
+</div>
+</div>
+</section>
+<!-- Technical Flow Diagram -->
+<section class="bg-surface-container-lowest border border-glass-stroke rounded-3xl p-12 shadow-sm relative overflow-hidden">
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDQwIEwgNDAgNDAgTCA0MCAwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjI0LCAyMjcsIDIyOSwgMC41KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-50 z-0"></div>
+<div class="relative z-10 text-center mb-12">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">The Resolution Pipeline</h2>
+</div>
+<div class="relative z-10 flex flex-col md:flex-row justify-between items-center max-w-4xl mx-auto gap-8">
+<a class="flex flex-col items-center group" href="/audit">
+<div class="w-24 h-24 bg-white/80 backdrop-blur-md rounded-full border-2 border-primary-container flex items-center justify-center shadow-[0_0_20px_rgba(96,99,238,0.2)] group-hover:shadow-[0_0_30px_rgba(96,99,238,0.4)] transition-all z-20 relative">
+<span class="material-symbols-outlined text-[40px] text-primary">input</span>
+<div class="absolute inset-0 rounded-full border border-primary animate-ping opacity-20"></div>
+</div>
+<h4 class="font-headline-md text-[20px] text-on-surface mt-6 mb-2">Ingest</h4>
+<span class="font-label-mono text-label-mono text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">Raw Signals</span>
+</a>
+<div class="hidden md:block flex-1 h-[2px] bg-gradient-to-r from-primary-container to-tertiary-container relative z-10 mx-4 opacity-50">
+<div class="absolute top-1/2 left-0 w-4 h-4 bg-primary rounded-full transform -translate-y-1/2 animate-[ping_2s_infinite]"></div>
+</div>
+<div class="md:hidden w-[2px] h-16 bg-gradient-to-b from-primary-container to-tertiary-container opacity-50"></div>
+<a class="flex flex-col items-center group" href="/dashboard">
+<div class="w-28 h-28 bg-primary/10 backdrop-blur-md rounded-full border-2 border-tertiary-container flex items-center justify-center shadow-[0_0_30px_rgba(132,85,239,0.3)] group-hover:scale-110 transition-all z-20 relative">
+<span class="material-symbols-outlined text-[48px] text-tertiary">hub</span>
+</div>
+<h4 class="font-headline-md text-[20px] text-on-surface mt-6 mb-2">Resolve</h4>
+<span class="font-label-mono text-label-mono text-tertiary bg-tertiary-fixed px-3 py-1 rounded-full">Identity Graph</span>
+</a>
+<div class="hidden md:block flex-1 h-[2px] bg-gradient-to-r from-tertiary-container to-secondary-container relative z-10 mx-4 opacity-50">
+<div class="absolute top-1/2 right-0 w-4 h-4 bg-secondary rounded-full transform -translate-y-1/2 animate-[ping_2s_infinite_0.5s]"></div>
+</div>
+<div class="md:hidden w-[2px] h-16 bg-gradient-to-b from-tertiary-container to-secondary-container opacity-50"></div>
+<a class="flex flex-col items-center group" href="/replay">
+<div class="w-24 h-24 bg-white/80 backdrop-blur-md rounded-full border-2 border-secondary-container flex items-center justify-center shadow-[0_0_20px_rgba(87,223,254,0.2)] group-hover:shadow-[0_0_30px_rgba(87,223,254,0.4)] transition-all z-20 relative">
+<span class="material-symbols-outlined text-[40px] text-secondary">verified_user</span>
+</div>
+<h4 class="font-headline-md text-[20px] text-on-surface mt-6 mb-2">Audit</h4>
+<span class="font-label-mono text-label-mono text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">Cryptographic Log</span>
+</a>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-surface border-t border-glass-stroke">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+<div class="md:col-span-1 space-y-4">
+<div class="flex items-center justify-center md:justify-start gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">fingerprint</span>
+<span class="font-headline-md text-headline-md font-bold text-on-background">Aether Identity</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2026 Aether Identity. Built for Auditability.</p>
+</div>
+<div class="md:col-span-3 flex flex-wrap justify-center md:justify-end gap-6 items-center">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/#features">Features</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/dashboard">Technology</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/audit">Audit</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/replay">Replay</a>
+</div>
+</div>
+</footer>
+</body></html>

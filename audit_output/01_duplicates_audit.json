@@ -1,0 +1,164 @@
+{
+  "audit_trail": [
+    {
+      "decision_ts": "2026-08-10T09:00:00.000000+00:00",
+      "event_key": "mobile|alice_mobile|login|2026-08-10T09:00:00.000000+00:00",
+      "identity_id": "alice_mobile",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "pixel-7"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-10T09:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "alice_mobile",
+        "last_seen": "2026-08-10T09:00:00.000000+00:00",
+        "max_confidence": 0.95,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "alice_mobile"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 1,
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-10T09:30:00.000000+00:00",
+      "event_key": "web|alice_web|behavior|2026-08-10T09:30:00.000000+00:00",
+      "identity_id": "alice_mobile",
+      "merged": {
+        "behavior": {
+          "click_freq": 12.0,
+          "mouse_speed": 340.0
+        },
+        "device_ids": [
+          "pixel-7"
+        ],
+        "event_count": 2,
+        "first_seen": "2026-08-10T09:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "alice_mobile",
+        "last_seen": "2026-08-10T09:30:00.000000+00:00",
+        "max_confidence": 0.95,
+        "platforms": [
+          "mobile",
+          "web"
+        ],
+        "user_ids": [
+          "alice_mobile",
+          "alice_web"
+        ]
+      },
+      "reason": "device match with mobile event mobile|alice_mobile|login|2026-08-10T09:00:00.000000+00:00",
+      "seq": 2,
+      "strategy": "mobile_device_priority",
+      "version": 2
+    }
+  ],
+  "fixture": "fixtures/01_duplicates.json",
+  "identities": [
+    {
+      "behavior": {
+        "click_freq": 12.0,
+        "mouse_speed": 340.0
+      },
+      "device_ids": [
+        "pixel-7"
+      ],
+      "event_count": 2,
+      "first_seen": "2026-08-10T09:00:00.000000+00:00",
+      "has_biometric": true,
+      "identity_id": "alice_mobile",
+      "last_seen": "2026-08-10T09:30:00.000000+00:00",
+      "max_confidence": 0.95,
+      "platforms": [
+        "mobile",
+        "web"
+      ],
+      "user_ids": [
+        "alice_mobile",
+        "alice_web"
+      ]
+    }
+  ],
+  "ingest_results": [
+    {
+      "event_key": "mobile|alice_mobile|login|2026-08-10T09:00:00.000000+00:00",
+      "identity_id": "alice_mobile",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "pixel-7"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-10T09:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "alice_mobile",
+        "last_seen": "2026-08-10T09:00:00.000000+00:00",
+        "max_confidence": 0.95,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "alice_mobile"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "event_key": "mobile|alice_mobile|login|2026-08-10T09:00:00.000000+00:00",
+      "status": "duplicate"
+    },
+    {
+      "event_key": "web|alice_web|behavior|2026-08-10T09:30:00.000000+00:00",
+      "identity_id": "alice_mobile",
+      "merged": {
+        "behavior": {
+          "click_freq": 12.0,
+          "mouse_speed": 340.0
+        },
+        "device_ids": [
+          "pixel-7"
+        ],
+        "event_count": 2,
+        "first_seen": "2026-08-10T09:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "alice_mobile",
+        "last_seen": "2026-08-10T09:30:00.000000+00:00",
+        "max_confidence": 0.95,
+        "platforms": [
+          "mobile",
+          "web"
+        ],
+        "user_ids": [
+          "alice_mobile",
+          "alice_web"
+        ]
+      },
+      "reason": "device match with mobile event mobile|alice_mobile|login|2026-08-10T09:00:00.000000+00:00",
+      "status": "accepted",
+      "strategy": "mobile_device_priority",
+      "version": 2
+    },
+    {
+      "event_key": "web|alice_web|behavior|2026-08-10T09:30:00.000000+00:00",
+      "status": "duplicate"
+    }
+  ],
+  "replay_verification": {
+    "events_replayed": 2,
+    "reproduced": true
+  },
+  "status_counts": {
+    "accepted": 2,
+    "duplicate": 2
+  }
+}

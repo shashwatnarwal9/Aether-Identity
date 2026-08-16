@@ -1,0 +1,217 @@
+{
+  "audit_trail": [
+    {
+      "decision_ts": "2026-08-13T23:30:00.000000+00:00",
+      "event_key": "web|frank_web|login|2026-08-13T23:30:00.000000+00:00",
+      "identity_id": "frank_web",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "laptop-4"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-13T23:30:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "frank_web",
+        "last_seen": "2026-08-13T23:30:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "web"
+        ],
+        "user_ids": [
+          "frank_web"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 1,
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-14T00:30:00.000000+00:00",
+      "event_key": "mobile|frank_mobile|login|2026-08-14T00:30:00.000000+00:00",
+      "identity_id": "frank_mobile",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "laptop-4"
+        ],
+        "event_count": 2,
+        "first_seen": "2026-08-13T23:30:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "frank_mobile",
+        "last_seen": "2026-08-14T00:30:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile",
+          "web"
+        ],
+        "user_ids": [
+          "frank_mobile",
+          "frank_web"
+        ]
+      },
+      "reason": "matched ['frank_web'] without priority signal; picked smallest id",
+      "seq": 2,
+      "strategy": "deterministic_fallback",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-14T03:00:00.000000+00:00",
+      "event_key": "mobile|frank_late|login|2026-08-14T03:00:00.000000+00:00",
+      "identity_id": "frank_late",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "laptop-4"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-14T03:00:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "frank_late",
+        "last_seen": "2026-08-14T03:00:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "frank_late"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 3,
+      "strategy": "new_identity",
+      "version": 1
+    }
+  ],
+  "fixture": "fixtures/05_midnight_boundary.json",
+  "identities": [
+    {
+      "behavior": {},
+      "device_ids": [
+        "laptop-4"
+      ],
+      "event_count": 1,
+      "first_seen": "2026-08-14T03:00:00.000000+00:00",
+      "has_biometric": false,
+      "identity_id": "frank_late",
+      "last_seen": "2026-08-14T03:00:00.000000+00:00",
+      "max_confidence": null,
+      "platforms": [
+        "mobile"
+      ],
+      "user_ids": [
+        "frank_late"
+      ]
+    },
+    {
+      "behavior": {},
+      "device_ids": [
+        "laptop-4"
+      ],
+      "event_count": 2,
+      "first_seen": "2026-08-13T23:30:00.000000+00:00",
+      "has_biometric": false,
+      "identity_id": "frank_mobile",
+      "last_seen": "2026-08-14T00:30:00.000000+00:00",
+      "max_confidence": null,
+      "platforms": [
+        "mobile",
+        "web"
+      ],
+      "user_ids": [
+        "frank_mobile",
+        "frank_web"
+      ]
+    }
+  ],
+  "ingest_results": [
+    {
+      "event_key": "web|frank_web|login|2026-08-13T23:30:00.000000+00:00",
+      "identity_id": "frank_web",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "laptop-4"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-13T23:30:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "frank_web",
+        "last_seen": "2026-08-13T23:30:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "web"
+        ],
+        "user_ids": [
+          "frank_web"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "event_key": "mobile|frank_mobile|login|2026-08-14T00:30:00.000000+00:00",
+      "identity_id": "frank_mobile",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "laptop-4"
+        ],
+        "event_count": 2,
+        "first_seen": "2026-08-13T23:30:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "frank_mobile",
+        "last_seen": "2026-08-14T00:30:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile",
+          "web"
+        ],
+        "user_ids": [
+          "frank_mobile",
+          "frank_web"
+        ]
+      },
+      "reason": "matched ['frank_web'] without priority signal; picked smallest id",
+      "status": "accepted",
+      "strategy": "deterministic_fallback",
+      "version": 1
+    },
+    {
+      "event_key": "mobile|frank_late|login|2026-08-14T03:00:00.000000+00:00",
+      "identity_id": "frank_late",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "laptop-4"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-14T03:00:00.000000+00:00",
+        "has_biometric": false,
+        "identity_id": "frank_late",
+        "last_seen": "2026-08-14T03:00:00.000000+00:00",
+        "max_confidence": null,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "frank_late"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    }
+  ],
+  "replay_verification": {
+    "events_replayed": 3,
+    "reproduced": true
+  },
+  "status_counts": {
+    "accepted": 3
+  }
+}

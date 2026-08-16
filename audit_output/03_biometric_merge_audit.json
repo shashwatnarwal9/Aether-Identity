@@ -1,0 +1,220 @@
+{
+  "audit_trail": [
+    {
+      "decision_ts": "2026-08-11T08:00:00.000000+00:00",
+      "event_key": "edge|carol_edge|face_auth|2026-08-11T08:00:00.000000+00:00",
+      "identity_id": "carol_edge",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "kiosk-1"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-11T08:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "carol_edge",
+        "last_seen": "2026-08-11T08:00:00.000000+00:00",
+        "max_confidence": 0.97,
+        "platforms": [
+          "edge"
+        ],
+        "user_ids": [
+          "carol_edge"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 1,
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "decision_ts": "2026-08-11T08:45:00.000000+00:00",
+      "event_key": "mobile|carol_mobile|face_auth|2026-08-11T08:45:00.000000+00:00",
+      "identity_id": "carol_edge",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "galaxy-s24",
+          "kiosk-1"
+        ],
+        "event_count": 2,
+        "first_seen": "2026-08-11T08:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "carol_edge",
+        "last_seen": "2026-08-11T08:45:00.000000+00:00",
+        "max_confidence": 0.97,
+        "platforms": [
+          "edge",
+          "mobile"
+        ],
+        "user_ids": [
+          "carol_edge",
+          "carol_mobile"
+        ]
+      },
+      "reason": "biometric match with edge event edge|carol_edge|face_auth|2026-08-11T08:00:00.000000+00:00",
+      "seq": 2,
+      "strategy": "edge_biometric_priority",
+      "version": 2
+    },
+    {
+      "decision_ts": "2026-08-11T09:15:00.000000+00:00",
+      "event_key": "mobile|mallory_mobile|face_auth|2026-08-11T09:15:00.000000+00:00",
+      "identity_id": "mallory_mobile",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "oneplus-12"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-11T09:15:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "mallory_mobile",
+        "last_seen": "2026-08-11T09:15:00.000000+00:00",
+        "max_confidence": 0.9,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "mallory_mobile"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "seq": 3,
+      "strategy": "new_identity",
+      "version": 1
+    }
+  ],
+  "fixture": "fixtures/03_biometric_merge.json",
+  "identities": [
+    {
+      "behavior": {},
+      "device_ids": [
+        "galaxy-s24",
+        "kiosk-1"
+      ],
+      "event_count": 2,
+      "first_seen": "2026-08-11T08:00:00.000000+00:00",
+      "has_biometric": true,
+      "identity_id": "carol_edge",
+      "last_seen": "2026-08-11T08:45:00.000000+00:00",
+      "max_confidence": 0.97,
+      "platforms": [
+        "edge",
+        "mobile"
+      ],
+      "user_ids": [
+        "carol_edge",
+        "carol_mobile"
+      ]
+    },
+    {
+      "behavior": {},
+      "device_ids": [
+        "oneplus-12"
+      ],
+      "event_count": 1,
+      "first_seen": "2026-08-11T09:15:00.000000+00:00",
+      "has_biometric": true,
+      "identity_id": "mallory_mobile",
+      "last_seen": "2026-08-11T09:15:00.000000+00:00",
+      "max_confidence": 0.9,
+      "platforms": [
+        "mobile"
+      ],
+      "user_ids": [
+        "mallory_mobile"
+      ]
+    }
+  ],
+  "ingest_results": [
+    {
+      "event_key": "edge|carol_edge|face_auth|2026-08-11T08:00:00.000000+00:00",
+      "identity_id": "carol_edge",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "kiosk-1"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-11T08:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "carol_edge",
+        "last_seen": "2026-08-11T08:00:00.000000+00:00",
+        "max_confidence": 0.97,
+        "platforms": [
+          "edge"
+        ],
+        "user_ids": [
+          "carol_edge"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    },
+    {
+      "event_key": "mobile|carol_mobile|face_auth|2026-08-11T08:45:00.000000+00:00",
+      "identity_id": "carol_edge",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "galaxy-s24",
+          "kiosk-1"
+        ],
+        "event_count": 2,
+        "first_seen": "2026-08-11T08:00:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "carol_edge",
+        "last_seen": "2026-08-11T08:45:00.000000+00:00",
+        "max_confidence": 0.97,
+        "platforms": [
+          "edge",
+          "mobile"
+        ],
+        "user_ids": [
+          "carol_edge",
+          "carol_mobile"
+        ]
+      },
+      "reason": "biometric match with edge event edge|carol_edge|face_auth|2026-08-11T08:00:00.000000+00:00",
+      "status": "accepted",
+      "strategy": "edge_biometric_priority",
+      "version": 2
+    },
+    {
+      "event_key": "mobile|mallory_mobile|face_auth|2026-08-11T09:15:00.000000+00:00",
+      "identity_id": "mallory_mobile",
+      "merged": {
+        "behavior": {},
+        "device_ids": [
+          "oneplus-12"
+        ],
+        "event_count": 1,
+        "first_seen": "2026-08-11T09:15:00.000000+00:00",
+        "has_biometric": true,
+        "identity_id": "mallory_mobile",
+        "last_seen": "2026-08-11T09:15:00.000000+00:00",
+        "max_confidence": 0.9,
+        "platforms": [
+          "mobile"
+        ],
+        "user_ids": [
+          "mallory_mobile"
+        ]
+      },
+      "reason": "no matching identity within temporal window",
+      "status": "accepted",
+      "strategy": "new_identity",
+      "version": 1
+    }
+  ],
+  "replay_verification": {
+    "events_replayed": 3,
+    "reproduced": true
+  },
+  "status_counts": {
+    "accepted": 3
+  }
+}

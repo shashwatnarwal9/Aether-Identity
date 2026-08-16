@@ -1,0 +1,7 @@
+__pycache__/
+.gstack/
+.pytest_cache/
+*.duckdb
+*.duckdb.wal
+prd.md
+docs\superpowers\specs

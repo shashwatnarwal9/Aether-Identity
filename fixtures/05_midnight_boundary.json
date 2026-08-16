@@ -1,0 +1,23 @@
+[
+  {
+    "platform": "web",
+    "event_type": "login",
+    "timestamp": "2026-08-13T23:30:00Z",
+    "user_id": "frank_web",
+    "device_id": "laptop-4"
+  },
+  {
+    "platform": "mobile",
+    "event_type": "login",
+    "timestamp": "2026-08-14T00:30:00Z",
+    "user_id": "frank_mobile",
+    "device_id": "laptop-4"
+  },
+  {
+    "platform": "mobile",
+    "event_type": "login",
+    "timestamp": "2026-08-14T03:00:00Z",
+    "user_id": "frank_late",
+    "device_id": "laptop-4"
+  }
+]
