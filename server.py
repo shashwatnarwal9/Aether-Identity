@@ -15,6 +15,7 @@ engine = IdentityEngine(os.environ.get("IDRES_DB", "identity.duckdb"))
 lock = threading.Lock()
 
 FRONTEND = Path(__file__).parent / "frontend"
+ASSETS = Path(__file__).parent / "assets"
 STATUS_CODES = {"accepted": 200, "duplicate": 409, "rejected": 422}
 
 
@@ -112,7 +113,16 @@ def replay_page():
 
 @app.get("/static/{name}")
 def static_file(name: str):
-    path = (FRONTEND / name).resolve()
-    if path.parent != FRONTEND.resolve() or not path.is_file():
+    return _serve(FRONTEND, name)
+
+
+@app.get("/assets/{name}")
+def asset_file(name: str):
+    return _serve(ASSETS, name)
+
+
+def _serve(root: Path, name: str):
+    path = (root / name).resolve()
+    if path.parent != root.resolve() or not path.is_file():
         return JSONResponse({"error": "not found"}, status_code=404)
     return FileResponse(path)

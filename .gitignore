@@ -4,4 +4,4 @@ __pycache__/
 *.duckdb
 *.duckdb.wal
 prd.md
-docs\superpowers\specs
+docs/superpowers/specs/2026-08-16-identity-resolution-design.md
